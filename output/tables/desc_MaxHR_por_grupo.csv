@@ -1,0 +1,15 @@
+Medida,Sem doença,Com doença
+n,410.0,508.0
+Média,148.1512,127.6555
+Mediana,150.0,126.0
+Moda,150.0,120.0
+Variância,542.334,546.9482
+Desvio-padrão (σ),23.2881,23.3869
+Coef. Variação (CV%),15.72,18.32
+Amplitude,133.0,135.0
+Q1 (25%),134.0,112.0
+Q2 / Mediana (50%),150.0,126.0
+Q3 (75%),165.0,144.25
+IQR (Q3 − Q1),31.0,32.25
+Assimetria (Pearson 2),-0.2382,0.2124
+Curtose (excesso),-0.1534,-0.1962

@@ -1,0 +1,15 @@
+Medida,Frequência Cardíaca Máxima (bpm)
+n,918.0
+Média,136.8094
+Mediana,138.0
+Moda,150.0
+Variância,648.2286
+Desvio-padrão (σ),25.4603
+Coef. Variação (CV%),18.61
+Amplitude,142.0
+Q1 (25%),120.0
+Q2 / Mediana (50%),138.0
+Q3 (75%),156.0
+IQR (Q3 − Q1),36.0
+Assimetria (Pearson 2),-0.1403
+Curtose (excesso),-0.4482

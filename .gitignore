@@ -1,0 +1,23 @@
+# Ambientes Virtuais (ESTE É O MAIOR VILÃO DE ESPAÇO)
+venv/
+.venv/
+env/
+.env/
+
+# Python Cache e arquivos compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Configurações de Editores de Código (Opcional, mas recomendado)
+.vscode/
+.idea/
+.spyderproject
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
