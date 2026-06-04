@@ -1,62 +1,43 @@
 # Análise Estatística — Heart Disease Dataset
 
-Trabalho de Probabilidade e Estatística: análise descritiva do perfil clínico
-de pacientes com e sem diagnóstico de doença cardíaca.
+O presente relatório expõe os resultados da análise estatística descritiva de uma base de dados clínicos composta por 918 pacientes, com o objetivo de delinear o perfil clínico de indivíduos com e sem diagnóstico de doença cardíaca. A análise busca responder à seguinte questão de pesquisa: qual é o perfil clínico de pacientes com e sem diagnóstico de doença cardíaca, e quais indicadores demográficos, hemodinâmicos e eletrocardiográficos se mostram mais informativos para distinguir os dois grupos?
 
-## Pergunta de Pesquisa
+## Perfil da Amostra
 
-> Qual é o perfil clínico de pacientes com e sem diagnóstico de doença
-> cardíaca, e quais indicadores — demográficos, hemodinâmicos e
-> eletrocardiográficos — se mostram mais informativos para distinguir
-> os dois grupos?
+A amostra total do estudo engloba 918 pacientes. A variável-alvo, indicadora da presença ou ausência de doença cardíaca, revela uma base de dados relativamente balanceada, porém com predominância do grupo diagnosticado com a enfermidade. Do total de observações, 508 pacientes, correspondentes a 55,3% da amostra, apresentam diagnóstico positivo para doença cardíaca, enquanto os 410 indivíduos restantes, representando 44,7%, não possuem a doença. Essa distribuição estabelece uma prevalência basal importante que serve como eixo comparativo para todas as análises subsequentes.
 
-## Dataset
+## Análise Qualitativa
 
-- **Fonte:** Heart Failure Prediction Dataset (combinação de 5 bases clínicas)
-- **Observações:** 918 pacientes, 12 variáveis
-- **Variável-alvo:** `HeartDisease` (0 = sem doença, 1 = com doença)
+A distribuição por sexo na amostra evidencia uma disparidade demográfica significativa, sendo majoritariamente composta por homens, que totalizam 725 pacientes e representam 78,9% do total, em contrapartida a 193 mulheres. Quando observado sob a ótica da doença cardíaca, o sexo masculino demonstra uma vulnerabilidade acentuada, uma vez que 90,2% de todos os pacientes diagnosticados com a enfermidade são homens, sugerindo uma forte correlação entre o sexo masculino e a presença da patologia neste banco de dados.
 
-## Estrutura do Projeto
+No que tange ao tipo de dor torácica reportada (ChestPainType), a manifestação assintomática (ASY) é a mais frequente, correspondendo a 54,0% da amostra geral. A importância clínica dessa variável torna-se evidente ao comparar os grupos: entre os pacientes com doença cardíaca, 77,2% relataram dor torácica assintomática. Em contrapartida, os pacientes saudáveis apresentam perfis de dor mais diversificados, destacando-se a dor atípica (ATA) e a dor não anginosa (NAP). Isso indica que a ausência dos sintomas clássicos de angina na apresentação inicial é um forte marcador da doença na amostra analisada.
 
-```
-prob_est_trabalho/
-├── dataset/raw/heart.csv          # Dados brutos
-├── notebooks/
-│   ├── 01_preprocessing.ipynb     # Carga, limpeza, panorama geral
-│   ├── 02_qualitative.ipynb       # Variáveis qualitativas
-│   ├── 03_discrete.ipynb          # Age (quantitativa discreta)
-│   └── 04_continuous.ipynb        # RestingBP, Cholesterol, MaxHR, Oldpeak
-├── src/
-│   ├── config.py                  # Constantes e paleta de cores
-│   ├── data_loader.py             # Carga e subsets
-│   ├── descriptive_stats.py       # Medidas descritivas (Pearson 2)
-│   ├── frequency_tables.py        # Tabelas fi/fri/Fi/Fri
-│   └── plotting.py                # Funções de visualização
-├── output/
-│   ├── figures/                   # Gráficos exportados (300 dpi)
-│   └── tables/                    # Tabelas em CSV
-└── requirements.txt
-```
+O eletrocardiograma de repouso (RestingECG) revelou resultados normais para 60,1% dos pacientes. Essa característica se manteve relativamente constante entre os grupos, com 65,1% dos pacientes saudáveis e 56,1% dos doentes apresentando eletrocardiograma normal em repouso. Este comportamento sugere que o ECG de repouso, isoladamente, possui baixa capacidade discriminatória para a presença da doença, reforçando a necessidade de exames de estresse.
 
-## Como executar
+A resposta ao estresse físico corrobora essa necessidade, sendo a angina induzida por exercício (ExerciseAngina) um excelente diferencial clínico. Na população geral, 59,5% não desenvolvem angina durante o exercício. Todavia, ao isolar os pacientes com diagnóstico positivo, nota-se que 62,2% apresentam angina induzida por exercício, enquanto apenas 13,4% dos pacientes saudáveis manifestam o mesmo sintoma. Tal constatação reforça o valor diagnóstico da isquemia induzida sob esforço.
 
-```bash
-# Instalar dependências
-pip install -r requirements.txt
+Analisando a inclinação do segmento ST durante o exercício (ST_Slope), a configuração plana (Flat) perfaz 50,1% da amostra total, seguida da configuração ascendente (Up) com 43,0%. O cruzamento com a variável-alvo demonstra um forte poder preditivo: 77,3% dos indivíduos sem doença cardíaca apresentam inclinação ascendente, indicadora de resposta fisiológica normal, ao passo que 75,0% dos pacientes com doença apresentam inclinação plana, um indicativo clássico de sofrimento miocárdico e isquemia.
 
-# Executar notebooks na ordem
-cd notebooks
-jupyter notebook
-```
+Por fim, a glicemia de jejum (FastingBS), categorizada como normal ou elevada (acima de 120 mg/dL), aponta que 76,6% da amostra possui níveis normais. Entre os doentes, 33,5% apresentam glicemia elevada, comparado a apenas 10,7% entre os saudáveis, apontando que desregulações metabólicas glicêmicas são comorbidades mais frequentes no grupo doente, embora não sejam a regra para a maioria dos pacientes.
 
-## Decisões de Pré-processamento
+## Análise Quantitativa Discreta
 
-| Variável    | Problema            | Decisão                     |
-|-------------|--------------------|-----------------------------|
-| Cholesterol | 172 valores = 0    | Excluir dessas análises     |
-| RestingBP   | 1 valor = 0        | Excluir dessa análise       |
+A idade dos pacientes varia ao longo de uma amplitude de 49 anos, possuindo média de 53,5 anos e mediana de 54,0 anos. A proximidade entre a média e a mediana se reflete no coeficiente de assimetria de Pearson 2 de -0,15, indicando uma distribuição muito próxima da simetria, com uma levíssima inclinação à esquerda. A dispersão dos dados é baixa, com coeficiente de variação de 17,6% e desvio-padrão de 9,4 anos. A curtose de -0,38 caracteriza a curva como levemente platicúrtica, indicando que as idades se espalham de maneira ligeiramente mais uniforme ao redor do centro do que em uma distribuição normal padrão, o que é visualizado de forma clara pela concentração da maioria dos pacientes nas faixas de 50 a 59 anos (40,7%) e 60 a 69 anos (24,1%). O boxplot confirma a simetria da distribuição e a ausência de discrepantes isolados severos. O cruzamento com a doença cardíaca revela que os pacientes afetados são, em média, mais velhos, apresentando média de 55,8 anos contra 50,5 anos dos indivíduos saudáveis. A mediana dos doentes situa-se em 57,0 anos, com 75% desse grupo possuindo mais de 51 anos, consolidando a idade avançada como um fator intrinsecamente ligado à presença da enfermidade.
 
-## Coeficiente de Assimetria
+## Análise Quantitativa Contínua
 
-Todas as análises reportam o **Pearson 2**: `AS = 3 × (média − mediana) / σ`.
-O `scipy.stats.skew()` é calculado apenas como verificação interna.
+A avaliação da pressão arterial em repouso (RestingBP) foi realizada em 917 observações, excluindo-se um registro biologicamente nulo. A média obtida foi de 132,5 mmHg, com mediana de 130,0 mmHg. A distribuição possui variabilidade baixa, com coeficiente de variação de 13,5% e desvio-padrão de 17,9 mmHg, significando que a amostra é razoavelmente homogênea neste quesito. A assimetria de Pearson 2 calculada em 0,42 evidencia uma distribuição levemente assimétrica à direita, tracionada por valores isolados de hipertensão severa observados no boxplot na forma de outliers superiores, que ultrapassam os 180 mmHg. Clinicamente, nota-se uma diferença marginal entre os grupos: doentes apresentam média de 134,4 mmHg, enquanto os saudáveis marcam 130,1 mmHg. Embora a pressão em repouso seja superior no grupo doente, a diferença não é isoladamente drástica.
+
+O colesterol sérico, analisado em 746 pacientes após a exclusão de medidas nulas ausentes, revelou média de 244,6 mg/dL e mediana de 237,0 mg/dL. A dispersão é considerada média, suportada pelo coeficiente de variação de 24,1% e um desvio-padrão considerável de 59,1 mg/dL, refletindo a diversidade de perfis lipídicos da amostra. A assimetria de 0,38 também indica leve assimetria à direita, mas a curtose elevada de 4,52 descreve uma distribuição leptocúrtica, indicando caudas pesadas com a presença de valores extremos e isolados de hipercolesterolemia grave observáveis no topo do boxplot. A comparação atesta médias de 251,0 mg/dL para doentes e 238,7 mg/dL para não doentes. Semelhante à pressão arterial, o colesterol é mais alto na presença da doença, mas os intervalos interquartis de ambos os grupos se sobrepõem substancialmente.
+
+A frequência cardíaca máxima alcançada (MaxHR) comportou média de 136,8 bpm e mediana de 138,0 bpm. O desvio-padrão de 25,4 bpm e o coeficiente de variação de 18,6% caracterizam uma variabilidade baixa a moderada. O coeficiente de Pearson 2 de -0,14 reflete uma alta simetria. Contudo, ao segmentar por grupos, esta variável se revela um forte marcador clínico de capacidade funcional prejudicada: indivíduos sem doença alcançam médias de 148,1 bpm (com 75% deles ultrapassando 134 bpm), ao passo que o grupo diagnosticado limita-se a uma média de 127,6 bpm (onde 75% sequer conseguem ultrapassar os 144 bpm). Os boxplots demonstram de forma cristalina que a caixa representativa do grupo doente está posicionada consideravelmente abaixo da caixa do grupo saudável, apontando a insuficiência cronotrópica como um sintoma fundamental da patologia na amostra.
+
+A depressão do segmento ST induzida por exercício (Oldpeak) constitui a métrica contínua mais polarizada do estudo. Com média global de 0,88 e mediana de 0,60, a variável possui coeficiente de variação extremamente alto, atingindo 120,2%, justificado por uma moda igual a zero, pois grande parte da amostra não apresenta depressão do ST. Esse excesso de zeros e a presença de calores altos resulta em uma distribuição fortemente assimétrica à direita (Pearson 2 de 0,80). A desagregação dos dados expõe perfeitamente o seu valor diagnóstico. Nos pacientes saudáveis, a mediana é estritamente 0,0, com 75% do grupo apresentando medidas de no máximo 0,60. Em contraste absoluto, os doentes apresentam mediana de 1,20 e média de 1,27, com o terceiro quartil alcançando a marca de 2,0. O boxplot comparativo ilustra uma distinção severa, em que os valores comuns no grupo com doença cardíaca aparecem apenas como outliers atípicos no grupo saudável.
+
+## Síntese
+
+A pesquisa buscou elucidar o perfil clínico que melhor distingue pacientes com e sem diagnóstico de doença cardíaca. A análise rigorosa dos indicadores demográficos e clínicos demonstra que os grupos não se diferenciam fortemente por medidas basais como pressão arterial e eletrocardiograma de repouso, nem possuem margens totalmente excludentes nos níveis de colesterol. 
+
+A diferenciação robusta entre os grupos emerge majoritariamente durante a resposta hemodinâmica e eletrocardiográfica ao estresse físico, combinada com fatores demográficos pontuais. O perfil clínico dominante do paciente com doença cardíaca diagnosticada neste estudo é caracterizado por um homem com idade superior a 55 anos, que relata apresentação álgica assintomática (ASY), mas que desenvolve angina evidente ao ser submetido a esforço físico. Além disso, esse paciente exibe nítida insuficiência cronotrópica, evidenciada por uma frequência cardíaca máxima atenuada, associada a isquemia miocárdica induzida, traduzida de forma marcante por um eletrocardiograma de esforço com inclinação do segmento ST plana (Flat) e alta depressão do segmento ST (Oldpeak). 
+
+Tais achados validam a premissa clínica de que os indicadores dinâmicos vinculados à tolerância ao esforço físico e à isquemia provável são os marcadores mais contundentes e informativos para o diagnóstico e a diferenciação da doença cardíaca nesta população.
