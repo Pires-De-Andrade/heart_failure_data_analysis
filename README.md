@@ -1,6 +1,6 @@
 # Análise Estatística — Heart Disease Dataset
 
-O presente relatório expõe os resultados da análise estatística descritiva de uma base de dados clínicos composta por 918 pacientes, com o objetivo de delinear o perfil clínico de indivíduos com e sem diagnóstico de doença cardíaca. A análise busca responder à seguinte questão de pesquisa: qual é o perfil clínico de pacientes com e sem diagnóstico de doença cardíaca, e quais indicadores demográficos, hemodinâmicos e eletrocardiográficos se mostram mais informativos para distinguir os dois grupos?
+Este repositório expõe os resultados da análise estatística descritiva de uma base de dados clínicos composta por 918 pacientes, com o objetivo de delinear o perfil clínico de indivíduos com e sem diagnóstico de doença cardíaca. A análise busca responder à seguinte questão de pesquisa: qual é o perfil clínico de pacientes com e sem diagnóstico de doença cardíaca, e quais indicadores demográficos, hemodinâmicos e eletrocardiográficos se mostram mais informativos para distinguir os dois grupos?
 
 ## Perfil da Amostra
 
