@@ -1,3 +1,18 @@
+---
+gsd_state_version: 1.0
+milestone: v2.1
+milestone_name: Explicabilidade do Modelo (SHAP)
+status: planning
+last_updated: "2026-06-22T22:53:26.236Z"
+last_activity: 2026-06-22
+progress:
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -9,16 +24,15 @@ See: .planning/PROJECT.md (updated 2026-06-22)
 
 ## Current Position
 
-Phase: 2 of 2 (Dashboard Interativo) — COMPLETA
-Plan: 1 of 1 in current phase
-Status: v2 entregue (ambas as fases concluídas e verificadas)
-Last activity: 2026-06-22 — Executados os planos do .planning: Fase 1 (modelo) e Fase 2 (dashboard) implementadas e verificadas
-
-Progress: [██████████] 100%
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-06-22 — Milestone v2.1 started
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 2
 - Average duration: — min
 - Total execution time: — hours

@@ -8,6 +8,18 @@ Trabalho acadêmico de Probabilidade e Estatística A (UFG, 1º sem/2026) sobre 
 
 Transformar a análise descritiva estática em uma ferramenta **interativa e preditiva** que demonstra, de forma reprodutível, quais indicadores clínicos distinguem pacientes com e sem doença cardíaca — e prevê o diagnóstico a partir deles.
 
+## Current Milestone: v2.1 Explicabilidade do Modelo (SHAP)
+
+**Goal:** Dar destaque ao modelo preditivo no dashboard com explicabilidade SHAP — importância global e explicação por paciente — elevando o modelo ao mesmo nível de profundidade do descritivo.
+
+**Target features:**
+- SHAP global (summary/beeswarm) — importância agregada das features, complementando os odds-ratios
+- SHAP local (waterfall) — explica cada predição ao vivo do dashboard
+- Nova seção dedicada à explicabilidade do modelo no dashboard (paridade visual com o descritivo)
+- Artefatos SHAP reprodutíveis gerados a partir do modelo treinado (seeds fixas)
+
+**Key context:** Superfície única = dashboard Streamlit (sem relatório/notebook nesta milestone). Sem expandir avaliação (cross-val/calibração/threshold ficam fora). Logística permanece o modelo; SHAP é camada complementar. Adicionar `shap` ao `requirements.txt`.
+
 ## Requirements
 
 ### Validated
@@ -22,7 +34,8 @@ Transformar a análise descritiva estática em uma ferramenta **interativa e pre
 
 <!-- Current scope. Building toward these. -->
 
-- (nenhum — v2 entregue)
+- [ ] **XAI**: Explicabilidade SHAP do modelo logístico — global (importância de features) e local (waterfall por paciente)
+- [ ] **XAI-DASH**: Seção de explicabilidade no dashboard com SHAP global + SHAP local na predição ao vivo
 
 ### Out of Scope
 
@@ -55,6 +68,24 @@ Transformar a análise descritiva estática em uma ferramenta **interativa e pre
 | Streamlit (não Dash/HTML estático) | Python puro, casa com stack, rápido, suporta predição ao vivo | ✓ Entregue — `dashboard/app.py`, 5 seções + predição |
 | 2 fases sequenciais (modelo → dashboard) | Dashboard consome artefatos do modelo | ✓ Entregue — dashboard carrega o `.joblib` da Fase 1 |
 | Zeros bio-impossíveis → imputação por mediana no pipeline | Mantém as 11 features e todas as linhas; mediana ajustada só no treino (sem vazamento) | ✓ Entregue |
+| SHAP para explicabilidade (não só odds-ratios) | Atribuição por-instância, lida com pipeline one-hot+scaler, viz fortes (beeswarm/waterfall); odds-ratios são só globais e lineares | — Pending (v2.1) |
+
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
 
 ---
-*Last updated: 2026-06-22 — v2 executada (modelo + dashboard concluídos e verificados)*
+*Last updated: 2026-06-22 — milestone v2.1 (Explicabilidade SHAP) iniciada*
