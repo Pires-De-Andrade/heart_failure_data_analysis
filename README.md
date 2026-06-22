@@ -41,3 +41,55 @@ A pesquisa buscou elucidar o perfil clínico que melhor distingue pacientes com 
 A diferenciação robusta entre os grupos emerge majoritariamente durante a resposta hemodinâmica e eletrocardiográfica ao estresse físico, combinada com fatores demográficos pontuais. O perfil clínico dominante do paciente com doença cardíaca diagnosticada neste estudo é caracterizado por um homem com idade superior a 55 anos, que relata apresentação álgica assintomática (ASY), mas que desenvolve angina evidente ao ser submetido a esforço físico. Além disso, esse paciente exibe nítida insuficiência cronotrópica, evidenciada por uma frequência cardíaca máxima atenuada, associada a isquemia miocárdica induzida, traduzida de forma marcante por um eletrocardiograma de esforço com inclinação do segmento ST plana (Flat) e alta depressão do segmento ST (Oldpeak). 
 
 Tais achados validam a premissa clínica de que os indicadores dinâmicos vinculados à tolerância ao esforço físico e à isquemia provável são os marcadores mais contundentes e informativos para o diagnóstico e a diferenciação da doença cardíaca nesta população.
+
+## Como Executar
+
+### Pré-requisitos
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Análise descritiva (notebooks)
+
+A análise estatística vive em `notebooks/`, na ordem do prefixo numérico
+(`01_preprocessing` → `04_continuous`). Tabelas e figuras são gravadas em
+`output/tables/` e `output/figures/`. Para gerar o relatório final:
+
+```bash
+python -m src.generate_report   # produz RELATORIO.docx
+```
+
+### Modelo preditivo (regressão logística)
+
+Treina a regressão logística que prevê `HeartDisease`, avalia no test set e
+salva os artefatos de forma determinística (semente fixa):
+
+```bash
+python -m src.train_model
+```
+
+Gera:
+
+- `models/logistic_model.joblib` — pipeline treinado (pré-processamento + modelo)
+- `output/tables/pred_metrics.csv` — acurácia, precisão, recall, F1, AUC
+- `output/tables/pred_confusion_matrix.csv` e `output/tables/pred_odds_ratios.csv`
+- `output/figures/05_confusion_matrix.png` e `output/figures/05_roc_curve.png`
+
+Desempenho no test set (n=184): acurácia **0,886** · AUC **0,933**. As variáveis
+mais influentes (`ST_Slope`, `ChestPainType`, `Sex`) coincidem com os achados da
+análise descritiva.
+
+### Dashboard interativo (Streamlit)
+
+Requer o modelo da etapa anterior (`models/logistic_model.joblib`):
+
+```bash
+streamlit run dashboard/app.py
+```
+
+O app abre no navegador com filtros reativos (Sexo, Doença Cardíaca, faixa
+etária), as seções da análise descritiva e um formulário de **predição ao vivo**
+que retorna P(Doença Cardíaca) e a classe prevista para um paciente informado.
