@@ -5,29 +5,30 @@
 See: .planning/PROJECT.md (updated 2026-06-22)
 
 **Core value:** Análise descritiva interativa + predição interpretável de `HeartDisease`
-**Current focus:** Phase 1 — Modelo Preditivo
+**Current focus:** v2 concluída — modelo + dashboard entregues
 
 ## Current Position
 
-Phase: 1 of 2 (Modelo Preditivo)
-Plan: 0 of TBD in current phase
-Status: Ready to spec
-Last activity: 2026-06-22 — Bootstrap da v2: PROJECT/REQUIREMENTS/ROADMAP criados, specs em geração
+Phase: 2 of 2 (Dashboard Interativo) — COMPLETA
+Plan: 1 of 1 in current phase
+Status: v2 entregue (ambas as fases concluídas e verificadas)
+Last activity: 2026-06-22 — Executados os planos do .planning: Fase 1 (modelo) e Fase 2 (dashboard) implementadas e verificadas
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
+- Total plans completed: 2
 - Average duration: — min
-- Total execution time: 0 hours
+- Total execution time: — hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 1. Modelo Preditivo | 1 | — | — |
+| 2. Dashboard Interativo | 1 | — | — |
 
 ## Accumulated Context
 

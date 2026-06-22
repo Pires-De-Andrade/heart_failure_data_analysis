@@ -10,8 +10,8 @@ A v1 entregou a análise estatística descritiva completa do *Heart Failure Pred
 - Integer phases (1, 2): Planned milestone work
 - Decimal phases (2.1): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Modelo Preditivo** - Regressão logística que prevê HeartDisease, avaliada e interpretada
-- [ ] **Phase 2: Dashboard Interativo** - App Streamlit com filtros reativos + predição ao vivo
+- [x] **Phase 1: Modelo Preditivo** - Regressão logística que prevê HeartDisease, avaliada e interpretada
+- [x] **Phase 2: Dashboard Interativo** - App Streamlit com filtros reativos + predição ao vivo
 
 ## Phase Details
 
@@ -27,7 +27,7 @@ A v1 entregou a análise estatística descritiva completa do *Heart Failure Pred
 **Plans**: TBD
 
 Plans:
-- [ ] 01-01: TBD (definido em plan-phase)
+- [x] 01-01: `src/train_model.py` — pipeline (impute mediana + one-hot + scaler) → logística → avaliação → odds-ratios → `models/logistic_model.joblib` (test AUC 0.933, acurácia 0.886)
 
 ### Phase 2: Dashboard Interativo
 **Goal**: Disponibilizar um app Streamlit que apresenta a análise descritiva de forma interativa (filtros reativos) e expõe um formulário de predição ao vivo usando o modelo da Fase 1.
@@ -41,7 +41,7 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 02-01: TBD (definido em plan-phase)
+- [x] 02-01: `dashboard/app.py` — app Streamlit (5 seções), filtros reativos (Sex/HeartDisease/idade), predição ao vivo consumindo o `.joblib`, dados/modelo em cache
 
 ## Progress
 
@@ -50,5 +50,5 @@ Phases execute in numeric order: 1 → 2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Modelo Preditivo | 0/TBD | Not started | - |
-| 2. Dashboard Interativo | 0/TBD | Not started | - |
+| 1. Modelo Preditivo | 1/1 | Complete | 2026-06-22 |
+| 2. Dashboard Interativo | 1/1 | Complete | 2026-06-22 |

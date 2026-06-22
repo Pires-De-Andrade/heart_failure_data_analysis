@@ -14,6 +14,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_RAW = PROJECT_ROOT / "dataset" / "raw" / "heart.csv"
 OUTPUT_FIGURES = PROJECT_ROOT / "output" / "figures"
 OUTPUT_TABLES = PROJECT_ROOT / "output" / "tables"
+MODELS_DIR = PROJECT_ROOT / "models"
+MODEL_PATH = MODELS_DIR / "logistic_model.joblib"
 
 # ---------------------------------------------------------------------------
 # Parâmetros do dataset
@@ -36,6 +38,35 @@ DISC_VAR = "Age"
 
 # Variáveis quantitativas contínuas (Bloco 3)
 CONT_VARS = ["RestingBP", "Cholesterol", "MaxHR", "Oldpeak"]
+
+# ---------------------------------------------------------------------------
+# Parâmetros de modelagem (Fase 1 — modelo preditivo)
+# ---------------------------------------------------------------------------
+# 11 features preditivas (todas as colunas exceto o alvo HeartDisease).
+# Categóricas recebem one-hot encoding; numéricas são padronizadas.
+MODEL_CAT_FEATURES = [
+    "Sex",
+    "ChestPainType",
+    "RestingECG",
+    "ExerciseAngina",
+    "ST_Slope",
+]
+MODEL_NUM_FEATURES = [
+    "Age",
+    "RestingBP",
+    "Cholesterol",
+    "FastingBS",
+    "MaxHR",
+    "Oldpeak",
+]
+MODEL_FEATURES = MODEL_NUM_FEATURES + MODEL_CAT_FEATURES
+
+# Colunas onde 0 representa dado ausente (mediana do treino imputa o valor).
+ZERO_AS_MISSING = ["Cholesterol", "RestingBP"]
+
+# Reprodutibilidade: semente única para split e modelo.
+RANDOM_STATE = 42
+TEST_SIZE = 0.2
 
 # Faixas etárias para a tabela de frequências de Age
 AGE_BINS = [0, 40, 50, 60, 70, float("inf")]

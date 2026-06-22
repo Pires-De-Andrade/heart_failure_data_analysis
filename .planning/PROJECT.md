@@ -15,13 +15,14 @@ Transformar a análise descritiva estática em uma ferramenta **interativa e pre
 <!-- Shipped and confirmed valuable. -->
 
 - [x] Análise descritiva completa (qualitativas, discreta, contínuas) — `RELATORIO.docx`, notebooks, `output/`
+- [x] **PRED**: Modelo de regressão logística que prediz `HeartDisease`, avaliado e interpretado (odds-ratios) — `src/train_model.py`, `models/logistic_model.joblib` (test AUC 0.933)
+- [x] **DASH**: Dashboard Streamlit interativo com filtros + formulário de predição ao vivo — `dashboard/app.py`
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] **PRED**: Modelo de regressão logística que prediz `HeartDisease`, avaliado e interpretado (odds-ratios)
-- [ ] **DASH**: Dashboard Streamlit interativo com filtros + formulário de predição ao vivo
+- (nenhum — v2 entregue)
 
 ### Out of Scope
 
@@ -50,9 +51,10 @@ Transformar a análise descritiva estática em uma ferramenta **interativa e pre
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Regressão logística (não multi-modelo ML) | Interpretável, alinhada ao curso de estatística, odds-ratios explicáveis | — Pending |
-| Streamlit (não Dash/HTML estático) | Python puro, casa com stack, rápido, suporta predição ao vivo | — Pending |
-| 2 fases sequenciais (modelo → dashboard) | Dashboard consome artefatos do modelo | — Pending |
+| Regressão logística (não multi-modelo ML) | Interpretável, alinhada ao curso de estatística, odds-ratios explicáveis | ✓ Entregue — AUC 0.933, top features ST_Slope/ChestPainType/Sex |
+| Streamlit (não Dash/HTML estático) | Python puro, casa com stack, rápido, suporta predição ao vivo | ✓ Entregue — `dashboard/app.py`, 5 seções + predição |
+| 2 fases sequenciais (modelo → dashboard) | Dashboard consome artefatos do modelo | ✓ Entregue — dashboard carrega o `.joblib` da Fase 1 |
+| Zeros bio-impossíveis → imputação por mediana no pipeline | Mantém as 11 features e todas as linhas; mediana ajustada só no treino (sem vazamento) | ✓ Entregue |
 
 ---
-*Last updated: 2026-06-22 after bootstrap da v2 (predição + dashboard)*
+*Last updated: 2026-06-22 — v2 executada (modelo + dashboard concluídos e verificados)*
