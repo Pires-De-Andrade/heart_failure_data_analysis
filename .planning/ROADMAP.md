@@ -12,6 +12,7 @@ A v1 entregou a análise estatística descritiva completa do *Heart Failure Pred
 
 - [x] **Phase 1: Modelo Preditivo** - Regressão logística que prevê HeartDisease, avaliada e interpretada
 - [x] **Phase 2: Dashboard Interativo** - App Streamlit com filtros reativos + predição ao vivo
+- [x] **Phase 3: Explicabilidade SHAP** (milestone v2.1) - SHAP global (beeswarm/bar) + local (waterfall) no dashboard
 
 ## Phase Details
 
@@ -43,12 +44,27 @@ Plans:
 Plans:
 - [x] 02-01: `dashboard/app.py` — app Streamlit (5 seções), filtros reativos (Sex/HeartDisease/idade), predição ao vivo consumindo o `.joblib`, dados/modelo em cache
 
+### Phase 3: Explicabilidade SHAP (milestone v2.1)
+**Goal**: Elevar o modelo preditivo ao mesmo nível de profundidade do descritivo via explicabilidade SHAP — importância global e explicação por paciente — no dashboard.
+**Depends on**: Phase 1 (modelo treinado) e Phase 2 (dashboard)
+**Requirements**: XAI-01, XAI-02, XAI-03, XAI-04, XAI-05, XAI-06, XAI-07
+**Success Criteria** (what must be TRUE):
+  1. `python -m src.train_model` gera `shap_global.npz` + `06_shap_beeswarm.png` de forma determinística (aditividade do SHAP até precisão de máquina)
+  2. Plots SHAP usam rótulos legíveis ("ST_Slope = Up"), não nomes pós one-hot
+  3. Dashboard tem seção "Explicabilidade" com bar global + beeswarm
+  4. Predição ao vivo exibe waterfall SHAP do paciente submetido
+  5. Explainer cacheado — construído uma única vez por sessão
+
+Plans:
+- [x] 03-01: `src/explain.py` (LinearExplainer + rótulos legíveis) + extensão do `train_model` (artefatos SHAP globais) + seção "Explicabilidade" e waterfall local cacheado no `dashboard/app.py`
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2
+Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Modelo Preditivo | 1/1 | Complete | 2026-06-22 |
 | 2. Dashboard Interativo | 1/1 | Complete | 2026-06-22 |
+| 3. Explicabilidade SHAP | 1/1 | Complete | 2026-06-23 |

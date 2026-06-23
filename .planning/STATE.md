@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Explicabilidade do Modelo (SHAP)
-status: planning
-last_updated: "2026-06-22T22:53:26.236Z"
-last_activity: 2026-06-22
+status: complete
+last_updated: "2026-06-23T13:15:00.000Z"
+last_activity: 2026-06-23
 progress:
-  total_phases: 0
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_phases: 1
+  completed_phases: 1
+  total_plans: 1
+  completed_plans: 1
+  percent: 100
 ---
 
 # Project State
@@ -20,20 +20,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-22)
 
 **Core value:** Análise descritiva interativa + predição interpretável de `HeartDisease`
-**Current focus:** v2 concluída — modelo + dashboard entregues
+**Current focus:** Milestone v2.1 (Explicabilidade SHAP) concluída
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-06-22 — Milestone v2.1 started
+Phase: 3 of 3 (Explicabilidade SHAP) — COMPLETA
+Plan: 1 of 1
+Status: Milestone v2.1 entregue (XAI-01…07 implementados e verificados)
+Last activity: 2026-06-23 — SHAP global (beeswarm/bar) + local (waterfall) no dashboard, explainer cacheado
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 2
+- Total plans completed: 3
 - Average duration: — min
 - Total execution time: — hours
 
@@ -43,6 +43,7 @@ Last activity: 2026-06-22 — Milestone v2.1 started
 |-------|-------|-------|----------|
 | 1. Modelo Preditivo | 1 | — | — |
 | 2. Dashboard Interativo | 1 | — | — |
+| 3. Explicabilidade SHAP | 1 | — | — |
 
 ## Accumulated Context
 

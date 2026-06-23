@@ -76,7 +76,9 @@ Gera:
 - `models/logistic_model.joblib` — pipeline treinado (pré-processamento + modelo)
 - `output/tables/pred_metrics.csv` — acurácia, precisão, recall, F1, AUC
 - `output/tables/pred_confusion_matrix.csv` e `output/tables/pred_odds_ratios.csv`
+- `output/tables/shap_global.npz` — valores SHAP globais (explicabilidade)
 - `output/figures/05_confusion_matrix.png` e `output/figures/05_roc_curve.png`
+- `output/figures/06_shap_beeswarm.png` — beeswarm SHAP global
 
 Desempenho no test set (n=184): acurácia **0,886** · AUC **0,933**. As variáveis
 mais influentes (`ST_Slope`, `ChestPainType`, `Sex`) coincidem com os achados da
@@ -91,5 +93,7 @@ streamlit run dashboard/app.py
 ```
 
 O app abre no navegador com filtros reativos (Sexo, Doença Cardíaca, faixa
-etária), as seções da análise descritiva e um formulário de **predição ao vivo**
-que retorna P(Doença Cardíaca) e a classe prevista para um paciente informado.
+etária), as seções da análise descritiva, uma seção de **Explicabilidade (SHAP)**
+— importância global (bar + beeswarm) — e um formulário de **predição ao vivo**
+que retorna P(Doença Cardíaca), a classe prevista e um **waterfall SHAP**
+explicando a predição daquele paciente.

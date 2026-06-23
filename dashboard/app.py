@@ -47,9 +47,16 @@ from src.config import (
     COLOR_DISEASE,
     PALETTE_HD_LIST,
 )
+from src.config import OUTPUT_TABLES, OUTPUT_FIGURES, RANDOM_STATE, TEST_SIZE
 from src.data_loader import load_raw
 from src.frequency_tables import freq_table_crosstab
 from src.descriptive_stats import descriptive_summary, pearson2_skewness
+from src.explain import (
+    readable_feature_names,
+    transform,
+    build_explainer,
+    shap_values,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -67,6 +74,44 @@ def get_model():
     if not MODEL_PATH.exists():
         return None
     return joblib.load(MODEL_PATH)
+
+
+@st.cache_resource
+def get_explainer():
+    """
+    Constrói o `LinearExplainer` SHAP uma única vez (XAI-07).
+
+    Reproduz o background de treino do `train_model` (mesmo split/seed) para
+    que o waterfall ao vivo seja consistente com os artefatos globais.
+    Retorna ``(explainer, feature_names)`` ou ``None`` se o modelo não existir.
+    """
+    from sklearn.model_selection import train_test_split
+    from src.train_model import load_xy
+
+    pipe = get_model()
+    if pipe is None:
+        return None
+    X, y = load_xy()
+    X_train, _, _, _ = train_test_split(
+        X, y, test_size=TEST_SIZE, stratify=y, random_state=RANDOM_STATE
+    )
+    explainer = build_explainer(pipe, X_train)
+    return explainer, readable_feature_names(pipe)
+
+
+@st.cache_data
+def get_shap_global():
+    """Carrega os valores SHAP globais pré-computados (`shap_global.npz`)."""
+    path = OUTPUT_TABLES / "shap_global.npz"
+    if not path.exists():
+        return None
+    d = np.load(path, allow_pickle=True)
+    return {
+        "values": d["values"],
+        "base_value": float(np.ravel(d["base_value"])[0]),
+        "data": d["data"],
+        "feature_names": list(d["feature_names"]),
+    }
 
 
 def hd_label(v: int) -> str:
@@ -280,6 +325,84 @@ def section_continuous(df: pd.DataFrame) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Seção: Explicabilidade (SHAP global)
+# ---------------------------------------------------------------------------
+def section_explainability() -> None:
+    st.header("Explicabilidade do Modelo (SHAP)")
+    st.caption(
+        "Valores SHAP em log-odds, computados sobre o conjunto de treino. "
+        "Complementam os odds-ratios: além da importância, mostram a direção "
+        "e a dispersão da contribuição de cada feature."
+    )
+
+    glob = get_shap_global()
+    if glob is None:
+        st.error(
+            "Artefatos SHAP não encontrados (`output/tables/shap_global.npz`). "
+            "Rode antes: `python -m src.train_model`."
+        )
+        return
+
+    values = glob["values"]
+    names = glob["feature_names"]
+
+    # --- XAI-04: bar chart global (mean |SHAP|) ---
+    st.subheader("Importância global — média de |SHAP|")
+    mean_abs = np.abs(values).mean(axis=0)
+    order = np.argsort(mean_abs)  # crescente → maior no topo do barh
+    fig, ax = plt.subplots(figsize=(8, 7))
+    ax.barh(
+        [names[i] for i in order],
+        mean_abs[order],
+        color=COLOR_DISEASE,
+    )
+    ax.set_xlabel("Importância média (|SHAP|, log-odds)")
+    ax.set_title("Contribuição média por feature")
+    fig.tight_layout()
+    st.pyplot(fig)
+    plt.close(fig)
+
+    # --- XAI-05: beeswarm global (reaproveita o PNG pré-computado) ---
+    st.subheader("Beeswarm — direção e magnitude por feature")
+    beeswarm = OUTPUT_FIGURES / "06_shap_beeswarm.png"
+    if beeswarm.exists():
+        st.image(str(beeswarm), width="stretch")
+        st.caption(
+            "Cada ponto é um paciente. Cor = valor da feature; posição = "
+            "contribuição (à direita aumenta o log-odds de doença)."
+        )
+    else:
+        st.warning("Figura `06_shap_beeswarm.png` ausente. Rode `python -m src.train_model`.")
+
+
+def _local_waterfall(row: pd.DataFrame) -> None:
+    """Renderiza o waterfall SHAP para um único paciente (XAI-06)."""
+    import shap
+
+    bundle = get_explainer()
+    if bundle is None:
+        st.info("Explainer indisponível (modelo não carregado).")
+        return
+    explainer, feature_names = bundle
+
+    pipe = get_model()
+    Xt = transform(pipe, row)
+    expl = shap_values(explainer, Xt, feature_names)
+
+    st.subheader("Por que esta predição? (SHAP local)")
+    fig = plt.figure()
+    shap.plots.waterfall(expl[0], show=False, max_display=12)
+    fig = plt.gcf()
+    fig.tight_layout()
+    st.pyplot(fig, bbox_inches="tight")
+    plt.close(fig)
+    st.caption(
+        "Contribuições em log-odds: barras vermelhas empurram para doença, "
+        "azuis para ausência, a partir da taxa-base do modelo."
+    )
+
+
+# ---------------------------------------------------------------------------
 # Seção: Predição ao vivo
 # ---------------------------------------------------------------------------
 def section_prediction(df: pd.DataFrame) -> None:
@@ -363,6 +486,10 @@ def section_prediction(df: pd.DataFrame) -> None:
         else:
             st.success(f"Risco estimado: **{hd_label(0)}** (p = {proba:.3f})")
 
+        # XAI-06: waterfall SHAP explicando esta predição específica.
+        st.markdown("---")
+        _local_waterfall(row)
+
 
 # ---------------------------------------------------------------------------
 # Main
@@ -376,7 +503,7 @@ def main() -> None:
 
     section = st.sidebar.radio(
         "Seção",
-        ["Visão Geral", "Qualitativas", "Idade", "Contínuas", "Predição"],
+        ["Visão Geral", "Qualitativas", "Idade", "Contínuas", "Explicabilidade", "Predição"],
     )
 
     if section == "Visão Geral":
@@ -387,6 +514,9 @@ def main() -> None:
         section_age(df_f)
     elif section == "Contínuas":
         section_continuous(df_f)
+    elif section == "Explicabilidade":
+        # SHAP global é ajustado no treino, não no recorte filtrado.
+        section_explainability()
     elif section == "Predição":
         # A predição usa entradas do formulário, não o recorte filtrado.
         section_prediction(df)

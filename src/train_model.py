@@ -60,6 +60,12 @@ from .config import (
     COLOR_DISEASE,
     DPI,
 )
+from .explain import (
+    readable_feature_names,
+    transform,
+    build_explainer,
+    shap_values,
+)
 
 
 def load_xy() -> tuple[pd.DataFrame, pd.Series]:
@@ -223,6 +229,56 @@ def odds_ratios_table(pipe: Pipeline) -> pd.DataFrame:
     return df
 
 
+def shap_global_artifacts(pipe: Pipeline, X_train: pd.DataFrame) -> pd.DataFrame:
+    """
+    Gera os artefatos SHAP globais (milestone v2.1, XAI-01/XAI-02).
+
+    Ajusta um `LinearExplainer` no conjunto de treino transformado e calcula
+    o SHAP (log-odds, exato) para todas as linhas de treino. Salva:
+
+        output/tables/shap_global.npz   → values, base_value, data, feature_names
+        output/figures/06_shap_beeswarm.png
+
+    Os nomes de features são os rótulos legíveis ("ST_Slope = Up"), não os
+    internos pós one-hot. Retorna o ranking de importância (mean |SHAP|).
+    """
+    import shap
+
+    feature_names = readable_feature_names(pipe)
+    explainer = build_explainer(pipe, X_train)
+    Xt = transform(pipe, X_train)
+    expl = shap_values(explainer, Xt, feature_names)
+
+    # --- Persistência dos valores (consumidos pelo dashboard sem recomputar) ---
+    OUTPUT_TABLES.mkdir(parents=True, exist_ok=True)
+    np.savez(
+        OUTPUT_TABLES / "shap_global.npz",
+        values=expl.values,
+        base_value=np.asarray(expl.base_values),
+        data=expl.data,
+        feature_names=np.array(feature_names, dtype=object),
+    )
+
+    # --- Beeswarm global (direção + magnitude por feature) ---
+    OUTPUT_FIGURES.mkdir(parents=True, exist_ok=True)
+    fig = plt.figure()
+    shap.plots.beeswarm(expl, show=False, max_display=len(feature_names))
+    fig = plt.gcf()
+    fig.suptitle("Importância SHAP (log-odds) — global", fontweight="bold")
+    fig.tight_layout()
+    fig.savefig(OUTPUT_FIGURES / "06_shap_beeswarm.png", dpi=DPI, bbox_inches="tight")
+    plt.close(fig)
+
+    # --- Ranking de importância (mean |SHAP|) ---
+    mean_abs = np.abs(expl.values).mean(axis=0)
+    ranking = (
+        pd.DataFrame({"feature": feature_names, "mean_abs_shap": mean_abs})
+        .sort_values("mean_abs_shap", ascending=False)
+        .reset_index(drop=True)
+    )
+    return ranking
+
+
 def main() -> None:
     """Orquestra split → treino → avaliação → interpretação → persistência."""
     print("→ Carregando dados...")
@@ -260,6 +316,12 @@ def main() -> None:
             f"OR={row['odds_ratio']:.3f}  (coef={row['coeficiente']:+.3f})"
         )
 
+    print("→ Gerando explicabilidade SHAP (global)...")
+    shap_rank = shap_global_artifacts(pipe, X_train)
+    print("  Top 5 variáveis por mean |SHAP|:")
+    for i, row in shap_rank.head(5).iterrows():
+        print(f"    {i + 1}. {row['feature']:<34} {row['mean_abs_shap']:.4f}")
+
     print("→ Persistindo modelo...")
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
     joblib.dump(pipe, MODEL_PATH)
@@ -270,8 +332,10 @@ def main() -> None:
     print(f"  - {OUTPUT_TABLES / 'pred_metrics.csv'}")
     print(f"  - {OUTPUT_TABLES / 'pred_confusion_matrix.csv'}")
     print(f"  - {OUTPUT_TABLES / 'pred_odds_ratios.csv'}")
+    print(f"  - {OUTPUT_TABLES / 'shap_global.npz'}")
     print(f"  - {OUTPUT_FIGURES / '05_confusion_matrix.png'}")
     print(f"  - {OUTPUT_FIGURES / '05_roc_curve.png'}")
+    print(f"  - {OUTPUT_FIGURES / '06_shap_beeswarm.png'}")
 
 
 if __name__ == "__main__":

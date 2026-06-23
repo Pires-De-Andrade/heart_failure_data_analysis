@@ -9,13 +9,13 @@ Requisitos da milestone v2.1 — Explicabilidade do Modelo (SHAP). Cada um mapei
 
 ### Explicabilidade (XAI)
 
-- [ ] **XAI-01**: `python -m src.train_model` gera artefatos SHAP globais reprodutíveis (`output/tables/shap_global.npz` + `output/figures/06_shap_beeswarm.png`) a partir do pipeline treinado — `LinearExplainer` sobre o `clf` extraído, dados transformados, seed fixa
-- [ ] **XAI-02**: Os plots SHAP exibem nomes de features legíveis (ex: "ST_Slope = Up"), não os nomes internos pós one-hot (`cat__ST_Slope_Up`) — mapeados de `VAR_LABELS`/`CAT_LABELS`
-- [ ] **XAI-03**: O usuário acessa uma seção "Explicabilidade" dedicada na navegação da sidebar do dashboard
-- [ ] **XAI-04**: A seção exibe um bar chart global de importância (mean |SHAP|) por feature
-- [ ] **XAI-05**: A seção exibe um beeswarm global mostrando direção + magnitude da contribuição de cada feature
-- [ ] **XAI-06**: Após submeter o formulário de predição, o usuário vê um waterfall SHAP que explica a predição daquele paciente específico
-- [ ] **XAI-07**: O explainer é cacheado (`@st.cache_resource`) — interações no dashboard não o recomputam
+- [x] **XAI-01**: `python -m src.train_model` gera artefatos SHAP globais reprodutíveis (`output/tables/shap_global.npz` + `output/figures/06_shap_beeswarm.png`) a partir do pipeline treinado — `LinearExplainer` sobre o `clf` extraído, dados transformados, seed fixa
+- [x] **XAI-02**: Os plots SHAP exibem nomes de features legíveis (ex: "ST_Slope = Up"), não os nomes internos pós one-hot (`cat__ST_Slope_Up`) — mapeados de `VAR_LABELS`/`CAT_LABELS`
+- [x] **XAI-03**: O usuário acessa uma seção "Explicabilidade" dedicada na navegação da sidebar do dashboard
+- [x] **XAI-04**: A seção exibe um bar chart global de importância (mean |SHAP|) por feature
+- [x] **XAI-05**: A seção exibe um beeswarm global mostrando direção + magnitude da contribuição de cada feature
+- [x] **XAI-06**: Após submeter o formulário de predição, o usuário vê um waterfall SHAP que explica a predição daquele paciente específico
+- [x] **XAI-07**: O explainer é cacheado (`@st.cache_resource`) — interações no dashboard não o recomputam
 
 ## Future Requirements
 
@@ -68,19 +68,19 @@ Quais fases cobrem quais requisitos. Preenchido na criação do roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| XAI-01 | TBD | Pending |
-| XAI-02 | TBD | Pending |
-| XAI-03 | TBD | Pending |
-| XAI-04 | TBD | Pending |
-| XAI-05 | TBD | Pending |
-| XAI-06 | TBD | Pending |
-| XAI-07 | TBD | Pending |
+| XAI-01 | 3 | ✓ Done |
+| XAI-02 | 3 | ✓ Done |
+| XAI-03 | 3 | ✓ Done |
+| XAI-04 | 3 | ✓ Done |
+| XAI-05 | 3 | ✓ Done |
+| XAI-06 | 3 | ✓ Done |
+| XAI-07 | 3 | ✓ Done |
 
 **Coverage:**
 - v2.1 requirements: 7 total
-- Mapped to phases: 0 (TBD — roadmap)
-- Unmapped: 7 ⚠️
+- Mapped to phases: 7 (Phase 3 — Explicabilidade SHAP)
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-22*
-*Last updated: 2026-06-22 — milestone v2.1 (Explicabilidade SHAP) definida*
+*Last updated: 2026-06-23 — milestone v2.1 (Explicabilidade SHAP) implementada e verificada (Phase 3)*

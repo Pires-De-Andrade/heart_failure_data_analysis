@@ -29,13 +29,14 @@ Transformar a análise descritiva estática em uma ferramenta **interativa e pre
 - [x] Análise descritiva completa (qualitativas, discreta, contínuas) — `RELATORIO.docx`, notebooks, `output/`
 - [x] **PRED**: Modelo de regressão logística que prediz `HeartDisease`, avaliado e interpretado (odds-ratios) — `src/train_model.py`, `models/logistic_model.joblib` (test AUC 0.933)
 - [x] **DASH**: Dashboard Streamlit interativo com filtros + formulário de predição ao vivo — `dashboard/app.py`
+- [x] **XAI**: Explicabilidade SHAP do modelo logístico — global (beeswarm/bar) e local (waterfall) — `src/explain.py`, artefatos em `output/` (aditividade exata, determinístico)
+- [x] **XAI-DASH**: Seção "Explicabilidade" no dashboard com SHAP global + waterfall na predição ao vivo, explainer cacheado — `dashboard/app.py`
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] **XAI**: Explicabilidade SHAP do modelo logístico — global (importância de features) e local (waterfall por paciente)
-- [ ] **XAI-DASH**: Seção de explicabilidade no dashboard com SHAP global + SHAP local na predição ao vivo
+- (nenhum — milestone v2.1 entregue)
 
 ### Out of Scope
 
@@ -68,7 +69,7 @@ Transformar a análise descritiva estática em uma ferramenta **interativa e pre
 | Streamlit (não Dash/HTML estático) | Python puro, casa com stack, rápido, suporta predição ao vivo | ✓ Entregue — `dashboard/app.py`, 5 seções + predição |
 | 2 fases sequenciais (modelo → dashboard) | Dashboard consome artefatos do modelo | ✓ Entregue — dashboard carrega o `.joblib` da Fase 1 |
 | Zeros bio-impossíveis → imputação por mediana no pipeline | Mantém as 11 features e todas as linhas; mediana ajustada só no treino (sem vazamento) | ✓ Entregue |
-| SHAP para explicabilidade (não só odds-ratios) | Atribuição por-instância, lida com pipeline one-hot+scaler, viz fortes (beeswarm/waterfall); odds-ratios são só globais e lineares | — Pending (v2.1) |
+| SHAP para explicabilidade (não só odds-ratios) | Atribuição por-instância, lida com pipeline one-hot+scaler, viz fortes (beeswarm/waterfall); odds-ratios são só globais e lineares | ✓ Entregue (v2.1) — LinearExplainer, aditividade exata, ranking SHAP concorda com odds-ratios |
 
 ## Evolution
 
